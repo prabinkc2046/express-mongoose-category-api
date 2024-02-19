@@ -75,7 +75,7 @@ sudo systemctl enable node.service
 ## set up nginx as a reverse proxy
 add nginx configuration file:
 server {
-    listen 8080;
+    listen 8080 ssl;
     server_name backend.yourdomain.com;
 
     location / {
