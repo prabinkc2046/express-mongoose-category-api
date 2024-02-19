@@ -72,4 +72,33 @@ sudo systemctl daemon-reload
 sudo systemctl start node.service 
 sudo systemctl enable node.service
 
+## set up nginx as a reverse proxy
+add nginx configuration file:
+server {
+    listen 8080;
+    server_name backend.yourdomain.com;
+
+    location / {
+        proxy_pass http://localhost:3005;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
+
+sudo ln -s /etc/nginx/sites-available/backend-proxy.conf /etc/nginx/sites-enabled/
+
+sudo nginx -t
+
+
+sudo certbot --nginx -d api.prabinkc.com
+ensure port 80 is open.
+
+sudo nginx -t
+
+
+
+
 
