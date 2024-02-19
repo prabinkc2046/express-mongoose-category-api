@@ -1,0 +1,12 @@
+[Unit]
+Description=my Node.js application
+After=network.target
+
+[Service]
+Environment="NODE_ENV=production"
+WorkingDirectory=/home/prabin/categorise-item
+ExecStart=/home/prabin/.nvm/versions/node/v20.10.0/bin/node src/app.js
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
