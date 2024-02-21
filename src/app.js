@@ -8,12 +8,14 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.use(cors());
 
-// Change this in production environment
+const DEFAULT_PORT = 3000;
+const DEFAULT_CONN= "mongodb://prabin:prabin@192.168.20.8:27017/categories";
+
 if (process.env.NODE_ENV === "production"){
     dotenv.config();
 }
-const conn = process.env.CONN;
-const PORT = process.env.PORT;
+const conn = process.env.CONN || DEFAULT_CONN
+const PORT = process.env.PORT || DEFAULT_PORT
 
 // Connect to MongoDb
 mongoose.connect(conn);
@@ -23,6 +25,15 @@ db.once('open', ()=> {
     console.log('Connected to MongoDB');
 });
 
+//api end point to retrive all items
+app.get("/api/items", async(req, res)=>{
+    try{
+        const items = await Category.find();
+        res.status(200).json({items});
+    } catch(e){
+        res.status(500).json({Error: e.message});
+    }
+})
 
 //api end point to retrive the category of the item passed
 app.get("/api/:item", async(req, res)=>{
